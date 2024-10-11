@@ -3,21 +3,14 @@ Game game = null;
 bool IsSizeSelected = false;
 do
 {
-    Console.WriteLine("Select the size of the game: small(4x4) -- medium(6x6) -- large(8x8)");
-    switch (Console.ReadLine())
+    Console.WriteLine("Select the size of the game, it's a grid of a*a (should be greater than 4)");
+    if(int.TryParse(Console.ReadLine(), out int choice))
     {
-        case "small":
-            game = new Game(4);
+        if(choice>=4)
+        {
+            game = new Game(choice);
             IsSizeSelected = true;
-            break;
-        case "medium":
-            game = new Game(6);
-            IsSizeSelected = true;
-            break;
-        case "large":
-            game = new Game(8);
-            IsSizeSelected = true;
-            break;
+        }
     }
 }
 while (!IsSizeSelected);

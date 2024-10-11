@@ -5,63 +5,14 @@
     public int Arrows { get; set; } = 5;
     private string ShootingResult = "";
     private bool Help = false;
+    public Entrance entrance;
     public Fountain fountain;
     public Pits[] pits;
     public Amaroks[] amaroks;
     public Maelstroms[] maelstroms;
     public Game(int size)
     {
-        if (size == 4)
-        {
-            grid = new ICell[4, 4];
-            pits = new Pits[] { new Pits(0, 2), new Pits(2, 0) };
-            amaroks = new Amaroks[] { new Amaroks(1, 2), new Amaroks(3, 3) };
-            maelstroms = new Maelstroms[] { new Maelstroms(0, 1) };
-            fountain = new Fountain(3, 2);
-
-        }
-        else if (size == 6)
-        {
-            grid = new ICell[6, 6];
-            pits = new Pits[] { new Pits(2, 0), new Pits(1, 5), new Pits(4, 1), new Pits(4, 4) };
-            amaroks = new Amaroks[] { new Amaroks(0, 4), new Amaroks(1, 2), new Amaroks(2, 2), new Amaroks(5, 2) };
-            maelstroms = new Maelstroms[] { new Maelstroms(3, 3) };
-            fountain = new Fountain(2, 5);
-
-        }
-        else if (size == 8)
-        {
-            grid = new ICell[8, 8];
-            pits = new Pits[] { new Pits(0, 6), new Pits(1, 4), new Pits(4, 1), new Pits(4, 5), new Pits(7, 0), new Pits(7, 4) };
-            amaroks = new Amaroks[] { new Amaroks(3, 0), new Amaroks(3, 6), new Amaroks(5, 0), new Amaroks(6, 1), new Amaroks(6, 5) };
-            maelstroms = new Maelstroms[] { new Maelstroms(2, 3), new Maelstroms(6, 4) };
-            fountain = new Fountain(7, 2);
-        }
-        grid![0, 0] = new Entrance();
-        grid[fountain!.X, fountain.Y] = fountain;
-        for (int i = 0; i < pits!.Length; i++)
-        {
-            grid[pits[i].X, pits[i].Y] = pits[i];
-        }
-        for (int i = 0; i < amaroks!.Length; i++)
-        {
-            grid[amaroks[i].X, amaroks[i].Y] = amaroks[i];
-        }
-        for (int i = 0; i < maelstroms!.Length; i++)
-        {
-            grid[maelstroms[i].X, maelstroms[i].Y] = maelstroms[i];
-        }
-        for (int i = 0; i < grid!.GetLength(0); i++)
-        {
-            for (int j = 0; j < grid.GetLength(1); j++)
-
-            {
-                if (grid[i, j] == null)
-                {
-                    grid[i, j] = new Empty();
-                }
-            }
-        }
+        (grid, entrance, pits, amaroks, maelstroms, fountain) = RandomMap.RandomGenerator(size);
     }
     public string Sense()
     {
@@ -183,6 +134,9 @@
             case "help":
                 Help = true;
                 break;
+            case "show":
+                Show();
+                break;
             default:
                 throw new NotImplementedException();
         }
@@ -291,6 +245,40 @@
                     break;
                 }
             }
+        }
+    }
+    public void Show()
+    {
+        for(int j = grid.GetLength(0)-1;j>-1;j--)
+        {
+            for(int i = 0;i<grid.GetLength(1); i++)
+            {
+                if(grid[i,j].GetType() == typeof(Empty))
+                {
+                    Console.Write($"{"_",4}");
+                }
+                else if(grid[i,j].GetType() == typeof(Entrance))
+                {
+                    Console.Write($"{"E",4}");
+                }
+                else if(grid[i,j].GetType() == typeof(Fountain))
+                {
+                    Console.Write($"{"F",4}");
+                }
+                else if(grid[i,j].GetType() == typeof(Pits))
+                {
+                    Console.Write($"{"P",4}");
+                }
+                else if(grid[i,j].GetType() == typeof(Amaroks))
+                {
+                    Console.Write($"{"A",4}");
+                }
+                else if(grid[i,j].GetType() == typeof(Maelstroms))
+                {
+                    Console.Write($"{"M",4}");
+                }
+            }
+            Console.WriteLine("\n");
         }
     }
 }
